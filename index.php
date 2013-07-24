@@ -209,7 +209,11 @@ function _moveIn(){
     
 }
 function _moveOut(){
-    
+    this.label.style.opacity = 1;
+    this.cir.cx = origx;
+    this.cir.cy = origy;
+    this.line.x2 = origx;
+    this.line.y2 = origy;
 }
 function contractNodes(){
     clearNodes(); //Temporary addin to make it stay functional.
