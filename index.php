@@ -144,7 +144,7 @@ if(client.readyState == 4 && client.status == 200){
 client.send();
 }
 function loadNodes(response,name){
-contractNodes();
+var nodes = contractNodes();
 var cir=1;
 var people = response.split('*');
 for(var c=0; c<(people.length-1); c++){
@@ -168,7 +168,7 @@ document.getElementById('l'+cir).style.strokeWidth=2;
 cir++;
 }
 }
-expandNodes();
+expandNodes(nodes);
 }
 function clearNodes(){
 for(var c=1; c<=16; c++){
@@ -212,10 +212,25 @@ function _moveOut(){
     
 }
 function contractNodes(){
-    clearNodes();
+    clearNodes(); //Temporary addin to make it stay functional.
+    var nodelist;
+    for(var c=0; c!=16; c++){
+        nodelist[c] = new ClassChangingNode(c);
+    }
+    var timer = setInterval(stepInAll(nodelist),20);
 }
-function expandNodes(){
+function expandNodes(nodelist){
     
+}
+function stepInAll(nodelist){
+    for(var c=0; c!=16; c++){
+        nodelist[c].moveIn();
+    }
+}
+function stepOutAll(nodelist){
+    for(var c=0; c!=16; c++){
+        nodelist[c].moveOut();
+    }
 }
 </script>
 </body>
