@@ -200,8 +200,8 @@ function ClassChangingNode(idnum){
     this.label = document.getElementById('t'+idnum);
     this.origx = this.cir.cx;
     this.origy = this.cir.cy;
-    this.xdist = abs(this.cir.cx - 350);
-    this.ydist = abs(this.cir.cy - 300);
+    this.xdist = Math.abs(this.cir.cx - 350);
+    this.ydist = Math.abs(this.cir.cy - 300);
     this.moveIn = _moveIn;
     this.moveout = _moveOut;
 }
@@ -214,7 +214,7 @@ function _moveOut(){
 function contractNodes(){
     clearNodes(); //Temporary addin to make it stay functional.
     var nodelist;
-    for(var c=0; c!=16; c++){
+    for(var c=1; c!=17; c++){
         nodelist[c] = new ClassChangingNode(c);
     }
     var timer = setInterval(stepInAll(nodelist),20);
@@ -223,12 +223,12 @@ function expandNodes(nodelist){
     
 }
 function stepInAll(nodelist){
-    for(var c=0; c!=16; c++){
+    for(var c=1; c!=17; c++){
         nodelist[c].moveIn();
     }
 }
 function stepOutAll(nodelist){
-    for(var c=0; c!=16; c++){
+    for(var c=1; c!=17; c++){
         nodelist[c].moveOut();
     }
 }
