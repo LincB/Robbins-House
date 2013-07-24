@@ -198,10 +198,10 @@ function ClassChangingNode(idnum){
     this.cir = document.getElementById('c'+idnum);
     this.line = document.getElementById('l'+idnum);
     this.label = document.getElementById('t'+idnum);
-    this.origx = this.cir.cx;
-    this.origy = this.cir.cy;
-    this.xdist = Math.abs(this.cir.cx - 350);
-    this.ydist = Math.abs(this.cir.cy - 300);
+    this.origx = this.cir.cx.baseVal.value;
+    this.origy = this.cir.cy.baseVal.value;
+    this.xdist = this.origx - 350;
+    this.ydist = this.origy - 300;
     this.moveIn = _moveIn;
     this.moveout = _moveOut;
 }
