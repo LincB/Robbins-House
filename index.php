@@ -213,7 +213,7 @@ function _moveOut(){
 }
 function contractNodes(){
     clearNodes(); //Temporary addin to make it stay functional.
-    var nodelist;
+    var nodelist = new Array();
     for(var c=1; c!=17; c++){
         nodelist[c] = new ClassChangingNode(c);
     }
