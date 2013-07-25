@@ -33,7 +33,7 @@ textarea {outline: none; resize: none; font-family: Verdana; font-size: 13px;}
 <textarea id="t16" class="t" style="left:600px; top:275px;" readonly></textarea>
 <textarea id="t14" class="t" style="left:600px; top:375px;" readonly></textarea>
 
-<textarea id="centerlabel" class="t" style="left:250px; top:170px; width:200px; height:100px; font-size:17px; font-weight:bold; text-align:center;" readonly></textarea>
+<textarea id="tcenter" class="t" style="left:250px; top:170px; width:200px; height:100px; font-size:17px; font-weight:bold; text-align:center;" readonly></textarea>
 </div>
 
 <svg id="map" xmlns="http://www.w3.org/2000/svg" version="1.1" height="602" width="702">
@@ -56,7 +56,7 @@ textarea {outline: none; resize: none; font-family: Verdana; font-size: 13px;}
 <line id="l16" x1="350" y1="300" x2="550" y2="300"/>
 <line id="l14" x1="350" y1="300" x2="550" y2="400"/>
 
-<circle id="center" cx="350" cy="300" r="20"/>
+<circle id="ccenter" cx="350" cy="300" r="20"/>
 
 <circle id="c4" cx="150" cy="500" r="0"/>
 <circle id="c2" cx="250" cy="500" r="0"/>
@@ -145,13 +145,14 @@ client.send();
 }
 function loadNodes(response,name){
 var nodes = contractNodes();
-var cir=1;
+setTimeout(function(){var cir=1;
+clearNodes();
 var people = response.split('*');
 for(var c=0; c<(people.length-1); c++){
 var info = people[c].split('~');
 if(info.length == 4){
-document.getElementById('center').setAttribute('r',info[2]*4);
-document.getElementById('centerlabel').innerHTML = name;
+document.getElementById('ccenter').setAttribute('r',info[2]*4);
+document.getElementById('tcenter').innerHTML = name;
 document.getElementById('description').innerHTML = info[3];
 var age=(info[0]-1913)*5;
 /*document.getElementById('life').setAttribute('x', age+100);
@@ -168,7 +169,7 @@ document.getElementById('l'+cir).style.strokeWidth=2;
 cir++;
 }
 }
-setTimeout(function(){expandNodes(nodes)},1000);
+expandNodes(nodes)},1000);
 }
 function clearNodes(){
 for(var c=1; c<=16; c++){
@@ -203,38 +204,40 @@ function ClassChangingNode(idnum){
     this.xdist = this.origx - 350;
     this.ydist = this.origy - 300;
     this.moveIn = _moveIn;
-    this.moveout = _moveOut;
+    this.moveOut = _moveOut;
 }
 function _moveIn(){
-    
+    this.label.style.opacity -= 0.02;
 }
 function _moveOut(){
-    this.label.style.opacity = 1;
-    this.cir.cx = origx;
-    this.cir.cy = origy;
-    this.line.x2 = origx;
-    this.line.y2 = origy;
+    this.label.style.opacity = parseFloat(this.label.style.opacity) + 0.02;
+    this.cir.cx = this.origx;
+    this.cir.cy = this.origy;
+    this.line.x2 = this.origx;
+    this.line.y2 = this.origy;
 }
 var timer;
 function contractNodes(){
-    clearNodes(); //Temporary addin to make it stay functional.
     var nodelist = new Array();
     for(var c=1; c!=17; c++){
         nodelist[c] = new ClassChangingNode(c);
     }
+    nodelist[17] = new ClassChangingNode('center');
     timer = setInterval(function(){stepInAll(nodelist);},20);
-    setTimeout(function(){clearInterval(window.timer);},1000);
+    setTimeout(function(){clearInterval(window.timer);for(var c=1; c!=18; c++){nodelist[c].label.style.opacity = 0;}},1000);
+    return nodelist;
 }
 function expandNodes(nodelist){
-    
+    timer = setInterval(function(){stepOutAll(nodelist);},20);
+    setTimeout(function(){clearInterval(window.timer);for(var c=1; c!=18; c++){nodelist[c].label.style.opacity = 1;}},1000);
 }
 function stepInAll(nodelist){
-    for(var c=1; c!=17; c++){
+    for(var c=1; c!=18; c++){
         nodelist[c].moveIn();
     }
 }
 function stepOutAll(nodelist){
-    for(var c=1; c!=17; c++){
+    for(var c=1; c!=18; c++){
         nodelist[c].moveOut();
     }
 }
