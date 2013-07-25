@@ -168,7 +168,7 @@ document.getElementById('l'+cir).style.strokeWidth=2;
 cir++;
 }
 }
-expandNodes(nodes);
+setTimeout(function(){expandNodes(nodes)},1000);
 }
 function clearNodes(){
 for(var c=1; c<=16; c++){
@@ -215,13 +215,15 @@ function _moveOut(){
     this.line.x2 = origx;
     this.line.y2 = origy;
 }
+var timer;
 function contractNodes(){
     clearNodes(); //Temporary addin to make it stay functional.
     var nodelist = new Array();
     for(var c=1; c!=17; c++){
         nodelist[c] = new ClassChangingNode(c);
     }
-    var timer = setInterval(stepInAll(nodelist),20);
+    timer = setInterval(function(){stepInAll(nodelist);},20);
+    setTimeout(function(){clearInterval(window.timer);},1000);
 }
 function expandNodes(nodelist){
     
