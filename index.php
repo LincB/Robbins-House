@@ -222,12 +222,14 @@ function _moveIn(){
 }
 function _moveOut(){
     this.label.style.opacity = parseFloat(this.label.style.opacity) + 0.02;
-    this.cir.setAttribute('cx',this.origx);
-    this.cir.setAttribute('cy',this.origy);
-    this.cir.setAttribute('r',this.targetr);
+    if(this.cir.cx.baseVal.value != this.origx || this.cir.cy.baseVal.value != this.origy || this.cir.r.baseVal.value != this.targetr){
+        this.cir.setAttribute('cx',this.cir.cx.baseVal.value + (this.xdist / 50));
+        this.cir.setAttribute('cy',this.cir.cy.baseVal.value + (this.ydist / 50));
+        this.cir.setAttribute('r',this.cir.r.baseVal.value + (this.targetr / 50));
     if(this.line){
-    this.line.setAttribute('x2',this.origx);
-    this.line.setAttribute('y2',this.origy);
+        this.line.setAttribute('x2',this.cir.cx.baseVal.value);
+        this.line.setAttribute('y2',this.cir.cy.baseVal.value);
+    }
     }
 }
 var timer;
