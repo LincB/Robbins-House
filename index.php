@@ -151,7 +151,7 @@ var people = response.split('*');
 for(var c=0; c<(people.length-1); c++){
 var info = people[c].split('~');
 if(info.length == 4){
-document.getElementById('ccenter').setAttribute('r',info[2]*4);
+nodes[17].targetr = info[2]*4;
 document.getElementById('tcenter').innerHTML = name;
 document.getElementById('description').innerHTML = info[3];
 var age=(info[0]-1913)*5;
@@ -163,7 +163,7 @@ document.getElementById('born').innerHTML =�info[0];
 document.getElementById('died').style.left = (((info[1]-1913)*5)+85)+'px';
 document.getElementById('died').innerHTML = info[1];*/
 }else{
-document.getElementById("c"+cir).setAttribute('r',info[1]*4);
+nodes[cir].targetr = info[1]*4;
 document.getElementById("t"+cir).innerHTML = info[0];
 document.getElementById('l'+cir).style.strokeWidth=2;
 cir++;
@@ -205,17 +205,29 @@ function ClassChangingNode(idnum){
     this.ydist = this.origy - 300;
     this.moveIn = _moveIn;
     this.moveOut = _moveOut;
+    this.origr = this.cir.r.baseVal.value;
+    this.targetr = 0;
 }
 function _moveIn(){
     this.label.style.opacity -= 0.02;
+    if(this.cir.cx.baseVal.value != 350 || this.cir.cy.baseVal.value != 300 || this.cir.r.baseVal.value != 0){
+        this.cir.setAttribute('cx',this.cir.cx.baseVal.value - (this.xdist / 50));
+        this.cir.setAttribute('cy',this.cir.cy.baseVal.value - (this.ydist / 50));
+        this.cir.setAttribute('r',this.cir.r.baseVal.value - (this.origr / 50));
+        if(this.line){
+            this.line.setAttribute('x2',this.cir.cx.baseVal.value);
+            this.line.setAttribute('y2',this.cir.cy.baseVal.value);
+        }
+    }
 }
 function _moveOut(){
     this.label.style.opacity = parseFloat(this.label.style.opacity) + 0.02;
-    this.cir.cx = this.origx;
-    this.cir.cy = this.origy;
+    this.cir.setAttribute('cx',this.origx);
+    this.cir.setAttribute('cy',this.origy);
+    this.cir.setAttribute('r',this.targetr);
     if(this.line){
-    this.line.x2 = this.origx;
-    this.line.y2 = this.origy;
+    this.line.setAttribute('x2',this.origx);
+    this.line.setAttribute('y2',this.origy);
     }
 }
 var timer;
