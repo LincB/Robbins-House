@@ -135,7 +135,7 @@ centerOnText(label);
  */
 function centerOnText(name){
 var client = new XMLHttpRequest();
-client.open('GET', 'http://robbinshouse.hostoi.com/read.php?name='+encodeURI(name));
+client.open('GET', 'read.php?name='+encodeURI(name));
 client.onreadystatechange = function() {
 if(client.readyState == 4 && client.status == 200){
   loadNodes(client.responseText,name);
@@ -213,8 +213,10 @@ function _moveOut(){
     this.label.style.opacity = parseFloat(this.label.style.opacity) + 0.02;
     this.cir.cx = this.origx;
     this.cir.cy = this.origy;
+    if(this.line){
     this.line.x2 = this.origx;
     this.line.y2 = this.origy;
+    }
 }
 var timer;
 function contractNodes(){
