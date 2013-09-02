@@ -29,7 +29,7 @@ echo('document.getElementById("c'.$c.'").value="'.$name.'";');
 }
 echo('},250);</script><h3>Edit '.$rperson.'</h3>');
 ?>
-<form action="process.php" method="post">
+<form action="process.php" method="post" id="form">
 <input type="hidden" name="type" value="edit"/>
 <p>Full name: <input type="text" name="name" id="name" readonly></p>
 <input type="hidden" name="born" id="born" value="1">
@@ -52,7 +52,7 @@ echo('},250);</script><h3>Edit '.$rperson.'</h3>');
 <p>Connection 14: <input type="text" name="c14" id="c14"></p>
 <p>Connection 15: <input type="text" name="c15" id="c15"></p>
 <p>Connection 16: <input type="text" name="c16" id="c16"></p>
-<p><input type="submit" value="Submit"> &nbsp;&nbsp;
+<p><input type="button" value="Submit" onclick="checkForbidden();"> &nbsp;&nbsp;
 <input type="button" value="Delete" style="background-color:red;" onclick="confirmDelete();"></p>
 <script>
 function confirmDelete(){
@@ -70,6 +70,15 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","http://robbinshouse.hostoi.com/process.php?type=delete&name=<?php echo($rperson); ?>",true);
 xmlhttp.send();
 //window.location.href="http://robbinshouse.hostoi.com/process.php?type=delete&name=<?php echo($rperson); ?>";
+}
+}
+function checkForbidden(){
+var name = document.getElementById('name').value;
+var desc = document.getElementById('desc').value;
+if(name.indexOf('"') != -1 || name.indexOf("'") != -1){
+    alert('Name or description contains a forbidden character " or \'');
+}else{
+    document.getElementById('form').submit();
 }
 }
 </script>
