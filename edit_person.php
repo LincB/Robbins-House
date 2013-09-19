@@ -64,10 +64,10 @@ xmlhttp.onreadystatechange=function()
   {
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    window.location.href="http://robbinshouse.hostoi.com/edit.php";
+    window.location.href="edit.php";
     }
   }
-xmlhttp.open("GET","http://robbinshouse.hostoi.com/process.php?type=delete&name=<?php echo($rperson); ?>",true);
+xmlhttp.open("GET","process.php?type=delete&name=<?php echo($rperson); ?>",true);
 xmlhttp.send();
 //window.location.href="http://robbinshouse.hostoi.com/process.php?type=delete&name=<?php echo($rperson); ?>";
 }
