@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html
 <body>
 <form action="process.php" method="POST" id="form">
 <input type="hidden" name="type" value="add"/>
