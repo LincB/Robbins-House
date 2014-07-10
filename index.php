@@ -18,6 +18,7 @@
                     <!--h3 style="margin-top: 0px; margin-bottom: 10px;">Search</h3-->
                     <input id="input" type="text" onkeyup="processSearch(this.value)" placeholder="Search" style="width: 85%; height: 20px; font-size: 18px;"/>
                     <div id="results"></div>
+                    <p style="visibility:hidden;">___________________________</p>
                 </td>
                 <td id="ul" style="width: 700px; position: relative; padding:0; margin:0;">
                     <div style="position:relative;">
@@ -115,6 +116,14 @@
             node.setAttribute('onmouseout','dark(this);');
             node.setAttribute('onclick','centerOnNode(this);');
         }
+        //setTimeout(function(){
+            var orignodes = new Array();
+            for(var c=1; c!=17; c++){
+                orignodes[c] = new ClassOrigNode(c);
+            }
+            orignodes[17] = new ClassOrigNode('center');
+            window.origs = orignodes;
+        //},1200);
         
     <?php
     include 'emailupdates.php';
@@ -155,15 +164,14 @@
                 nodelist[c] = new ClassChangingNode(c);
             }
             nodelist[17] = new ClassChangingNode('center');
-            window.nodes = nodelist;
-            var nodes = contractNodes();
+            contractNodes(nodelist);
             setTimeout(function(){var cir=1;
                 clearNodes();
                 var people = response.split('*');
                 for(var c=0; c<(people.length-1); c++){
                     var info = people[c].split('~');
                     if(info.length == 4){
-                        nodes[17].targetr = info[2]*4;
+                        nodelist[17].targetr = info[2]*4;
                         document.getElementById('tcenter').innerHTML = name;
                         document.getElementById('description').innerHTML = info[3];
                         var age=(info[0]-1913)*5;
@@ -175,13 +183,13 @@
     document.getElementById('died').style.left = (((info[1]-1913)*5)+85)+'px';
     document.getElementById('died').innerHTML = info[1];*/
                     }else{
-                        nodes[cir].targetr = info[1]*4;
+                        nodelist[cir].targetr = info[1]*4;
                         document.getElementById("t"+cir).innerHTML = info[0];
                         document.getElementById('l'+cir).style.strokeWidth=2;
                         cir++;
                     }
                 }
-                expandNodes(nodes)},1000);
+                expandNodes(nodelist)},1000);
         }
         function clearNodes(){
             for(var c=1; c<=16; c++){
@@ -211,14 +219,22 @@
             this.cir = document.getElementById('c'+idnum);
             this.line = document.getElementById('l'+idnum);
             this.label = document.getElementById('t'+idnum);
-            this.origx = this.cir.cx.baseVal.value;
-            this.origy = this.cir.cy.baseVal.value;
-            this.xdist = this.origx - 350;
-            this.ydist = this.origy - 300;
+//            this.origx = this.cir.cx.baseVal.value;
+//            this.origy = this.cir.cy.baseVal.value;
+            if(idnum === "center"){idnum = 17;}
+            this.origx = window.origs[idnum].x;
+            this.origy = window.origs[idnum].y;
+            this.xdist = this.cir.cx.baseVal.value - 350;
+            this.ydist = this.cir.cy.baseVal.value - 300;
             this.moveIn = _moveIn;
             this.moveOut = _moveOut;
             this.origr = this.cir.r.baseVal.value;
             this.targetr = 0;
+        }
+        
+        function ClassOrigNode(idnum){
+            this.x = document.getElementById('c'+idnum).cx.baseVal.value;
+            this.y = document.getElementById('c'+idnum).cy.baseVal.value;
         }
         function _moveIn(){
             this.label.style.opacity -= 0.02;
@@ -245,19 +261,20 @@
             }
         }
         var timer;
-        function contractNodes(){
+        function contractNodes(nodelist){
 //            var nodelist = new Array();
 //            for(var c=1; c!=17; c++){
 //                nodelist[c] = new ClassChangingNode(c);
 //            }
 //            nodelist[17] = new ClassChangingNode('center');
+            clearInterval(timer);
             timer = setInterval(function(){stepInAll(nodelist);},20);
             setTimeout(function(){clearInterval(window.timer);for(var c=1; c!=18; c++){nodelist[c].label.style.opacity = 0;}},1000);
-            return nodelist;
         }
         function expandNodes(nodelist){
+            clearInterval(timer);
             timer = setInterval(function(){stepOutAll(nodelist);},20);
-            setTimeout(function(){clearInterval(window.timer);for(var c=1; c!=18; c++){nodelist[c].label.style.opacity = 1;}},1000);
+            setTimeout(function(){clearInterval(window.timer);for(var c=1; c!=18; c++){nodelist[c].label.style.opacity = 1;};resetNodes(nodelist);},1000);
         }
         function stepInAll(nodelist){
             for(var c=1; c!=18; c++){
@@ -269,6 +286,23 @@
                 nodelist[c].moveOut();
             }
         }
+        
+        function resetNodes(nodelist){
+            var interval_id = window.setInterval("", 9999);
+            for(var i = 1; i < interval_id; i++)
+                window.clearInterval(i);
+            for(var c=1; c!=18; c++){
+                var node = nodelist[c];
+                node.cir.setAttribute('cx',window.origs[c].x);
+                node.cir.setAttribute('cy',window.origs[c].y);
+                node.cir.setAttribute('r',node.targetr);
+                if(node.line){
+                    node.line.setAttribute('x2',node.cir.cx.baseVal.value);
+                    node.line.setAttribute('y2',node.cir.cy.baseVal.value);
+                }
+            }
+        }
+        
         function processSearch(query){
         //if(query !== ''){
         console.log("searched");

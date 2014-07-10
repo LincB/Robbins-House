@@ -1,0 +1,31 @@
+Progress on Thinkmap-free version
+
+Steps (order of importance, details below)
+1. SQL Retrieve engine COMPLETED
+2. Basic display engine 80%
+3. Dynamic sizing COMPLETED
+4. Easy data-entry forms 10%
+5. Animation/Better graphics 0%
+
+Detail of steps
+
+SQL Retrieve Engine
+Currently: Function. Two versions: One for text name, and one for labelled circle node. Calls read.php, and parses returned string into arrays. These are given to the display engine.
+
+Basic display engine
+Ideas: Main page is a 2x2 table. Upper-left (largest area) contains main "map" (SVG).
+Upper right sidebar is biography/description of selected node (HTML). Lower left is timeline bar (SVG). Lower right could be a link to leave feedback (low priority, HTML). Map centers of single node, which shows description. Surrounded by related nodes, which show name. The size of each node is determined by that person's importance (defined in SQL). When an outer node is clicked, it becomes the center.
+
+Dynamic sizing
+Zooms page based on browser height.
+
+Easy data-entry
+Since whoever's entering the data shouldn't have to deal with SQL, we need to create PHP/AJAX forms for that. See format description below.
+
+Animation/better graphics
+Once everything else is done, we should make a clicked node slide into place, instead of disappearing and reappearing in the middle. SVG has built-in animation, but I don't know much about it Javascript is another possibility.
+
+
+SQL Data Format
+Each table represents one person. The name of the table is Firstname_Lastname. The fields are: Name, BornOrImportance, Died, Importance, Description. For the first line, which describes the main node, all five fields are used, with the second as Born. For other lines, which describe linked nodes, the first two fields are used, with the second as Importance.
+IMPORTANT: All connections MUST be declared on both sides. For example, if A is supposed to link to B, A must be listed as a linked node inB's table, AND B must be listed as a linked node in A's table.

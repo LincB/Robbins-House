@@ -17,13 +17,15 @@ mysqli_close($con);
 require 'altsql.php';
 $con=altsql_select_db('people');
 $uname=str_replace(' ','_',$name);
-$data=altsql_select($uname,'*',$con);
+$safeuname = str_replace("'",'%27',str_replace('"','%22',$uname));
+$data=altsql_select($safeuname,'*',$con);
 foreach($data as $row){
-if($row[0]==$name)
-{
-echo($row[1].'~'.$row[2].'~'.$row[3].'~'.stripslashes($row[4]).'*');
-}else{
-echo($row[0].'~'.$row[1].'*');
+    if($row[0]==$name){
+        echo($row[1].'~'.$row[2].'~'.$row[3].'~'.stripslashes($row[4]).'*');
+    }else{
+        echo($row[0].'~'.$row[1].'*');
+    }
 }
-}
+//$output = file('altsql/people/'.$safeuname.'.txt');
+//echo($output[0]);
 ?>

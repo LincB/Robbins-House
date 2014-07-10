@@ -14,11 +14,11 @@
     function checkForbidden(){
 var name = document.getElementById('name').value;
 var desc = document.getElementById('desc').value;
-if(name.indexOf('"') != -1 || name.indexOf("'") != -1){
-    alert('Name or description contains a forbidden character " or \'');
-}else{
+//if(name.indexOf('"') != -1 || name.indexOf("'") != -1){
+   // alert('Name or description contains a forbidden character " or \'');
+//}else{
     document.getElementById('form').submit();
-}
+//}
 }
     </script>
 </body>
